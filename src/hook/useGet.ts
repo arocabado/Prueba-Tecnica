@@ -14,7 +14,7 @@ export const useGet = (): ReturnValues => {
       const imageJson = await imageResponse.json();
       const factResponse = await fetch("https://catfact.ninja/fact");
       const factJson = await factResponse.json();
-      setImages({image:imageJson._id, message:factJson.fact});
+      setImages({ image: imageJson._id, message: factJson.fact });
     } catch (error) {
       console.log(error);
     }

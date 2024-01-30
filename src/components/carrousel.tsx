@@ -3,26 +3,39 @@ import { useData } from "../Context/data";
 import IconArrow from "../icons/iconArrow";
 import IconClose from "../icons/iconClose";
 import IconHeart from "../icons/iconHeart";
+import { useState } from "react";
 
 interface Props {
   setCarusel: React.Dispatch<React.SetStateAction<boolean>>;
   currentImage: number;
   setCurrentImage: React.Dispatch<React.SetStateAction<number>>;
+  neverEnds?: boolean;
 }
 
-const Carrousel = ({ setCarusel, currentImage, setCurrentImage }: Props) => {
+const Carrousel = ({
+  setCarusel,
+  currentImage,
+  setCurrentImage,
+  neverEnds = false,
+}: Props) => {
   const { getData } = useGet();
   const { images, setLikedImages, likedImages, deleteImages } = useData();
+  const dataImages = neverEnds ? images : likedImages;
 
   const changeImage = (type: string) => {
     if (type === "prev") {
       setCurrentImage(currentImage - 1);
     }
-    if (type === "next") {
-      if (currentImage === images.length - 2) {
+    if (type === "next" && neverEnds) {
+      if (currentImage === dataImages.length - 2) {
         getData();
       }
       setCurrentImage(currentImage + 1);
+    }
+    if (type === "next" && !neverEnds) {
+      if (currentImage != dataImages.length - 1) {
+        setCurrentImage(currentImage + 1);
+      }
     }
   };
   const closeCarusel = () => {
@@ -30,16 +43,19 @@ const Carrousel = ({ setCarusel, currentImage, setCurrentImage }: Props) => {
     deleteImages();
     setCurrentImage(0);
   };
-  console.log(images);
+
+  const handleCopiarPortaPapeles = async (valor: string) => {
+    await navigator.clipboard.writeText(valor);
+  };
 
   return (
     <>
       <div className="fixed top-0 left-0 h-full w-full bg-black/[.6]"></div>
-      {images.length > 0 && currentImage < images.length && (
+      {dataImages.length > 0 && currentImage < dataImages.length && (
         <div
           className="w-3/4 h-3/4 fixed top-1/2 left-1/2 bg-slate-500 transform -translate-x-1/2 -translate-y-1/2 rounded-xl text-slate-200"
           style={{
-            backgroundImage: `url(https://cataas.com/cat/${images[currentImage].image})`,
+            backgroundImage: `url(https://cataas.com/cat/${dataImages[currentImage].image})`,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
@@ -49,17 +65,18 @@ const Carrousel = ({ setCarusel, currentImage, setCurrentImage }: Props) => {
           <div className="w-full h-full flex flex-col">
             <div className="flex justify-between items-center w-full pl-4 pt-2 pr-8">
               <button
-                className={`aspect-square w-14 cursor-pointer hover:text-red-800 ${likedImages.some(
-                  (data) =>
-                    data.image === images[currentImage].image && "text-red-600"
-                )}`}
+                className={`aspect-square w-14 cursor-pointer hover:text-red-800 ${
+                  likedImages.some(
+                    (data) => data.image === dataImages[currentImage].image
+                  ) && "text-red-600"
+                }`}
                 disabled={likedImages.some(
-                  (data) => data.image === images[currentImage].image
+                  (data) => data.image === dataImages[currentImage].image
                 )}
                 onClick={() =>
                   setLikedImages({
-                    image: images[currentImage].image,
-                    message: images[currentImage].message,
+                    image: dataImages[currentImage].image,
+                    message: dataImages[currentImage].message,
                   })
                 }
               >
@@ -89,9 +106,14 @@ const Carrousel = ({ setCarusel, currentImage, setCurrentImage }: Props) => {
               </button>
             </div>
 
-            <div className="flex w-full h-1/4 text-slate-50 px-5 text-xl font-bold items-center justify-center">
-              <label className="cursor-pointer">
-                {images[currentImage].message}
+            <div className="flex w-full h-1/4 text-slate-50 px-5 text-xl font-bold items-center justify-center bg-slate-500/[.6]">
+              <label
+                className="cursor-pointer"
+                onClick={() =>
+                  handleCopiarPortaPapeles(dataImages[currentImage].message)
+                }
+              >
+                {dataImages[currentImage].message}
               </label>
             </div>
           </div>

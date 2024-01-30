@@ -6,7 +6,7 @@ import { useState } from "react";
 const Inicio = () => {
   const [caruselState, setCaruselState] = useState<boolean>(false);
   const [currentImage, setCurrentImage] = useState<number>(0);
-  console.log(currentImage)
+
   return (
     <div
       className="w-full h-full relative text-slate-200"
@@ -40,7 +40,7 @@ const Inicio = () => {
         </div>
       </div>
       <div className="absolute right-40 top-9">
-        {caruselState && <Carrousel setCarusel={setCaruselState} currentImage={currentImage} setCurrentImage={setCurrentImage}/>}
+        {caruselState && <Carrousel setCarusel={setCaruselState} currentImage={currentImage} setCurrentImage={setCurrentImage} neverEnds={true}/>}
       </div>
     </div>
   );

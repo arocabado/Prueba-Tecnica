@@ -1,9 +1,9 @@
 import styles from "./navbar.module.css";
 import { NavLink, Outlet } from "react-router-dom";
-import IconCat from "../../icons/iconCat";
 import IconClose from "../../icons/iconClose";
 import IconMenu from "../../icons/iconMenu";
 import { useState } from "react";
+import Logo from "./components/logo";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState<boolean>(false);
@@ -12,18 +12,10 @@ const Navbar = () => {
     <div className={`${styles.container}`}>
       <header
         style={{ gridArea: "header" }}
-        className="shadow-md w-full bg-slate-600 fixed top-0 left-0 text-slate-200"
+        className="shadow-md w-full bg-slate-600 fixed top-0 left-0 text-slate-200 z-20"
       >
         <div className="md:flex justify-between items-center py-4 px-7">
-          <NavLink
-            className="font-bold text-2xl cursor-pointer flex items-center gap-1 hover:text-slate-400 duration-500"
-            to="/"
-          >
-            <div className="aspect-square w-10">
-              <IconCat />
-            </div>
-            Gatos
-          </NavLink>
+          <Logo title={"Gatos"}/>
           <div
             className="aspect-square w-7 absolute right-8 top-6 cursor-pointer md:-top-7 transition-all duration-500 ease-in"
             onClick={() => setOpenMenu(!openMenu)}
