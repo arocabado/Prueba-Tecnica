@@ -3,7 +3,6 @@ import { useData } from "../Context/data";
 import IconArrow from "../icons/iconArrow";
 import IconClose from "../icons/iconClose";
 import IconHeart from "../icons/iconHeart";
-import { useState } from "react";
 
 interface Props {
   setCarusel: React.Dispatch<React.SetStateAction<boolean>>;
@@ -27,7 +26,7 @@ const Carrousel = ({
       setCurrentImage(currentImage - 1);
     }
     if (type === "next" && neverEnds) {
-      if (currentImage === dataImages.length - 2) {
+      if (currentImage === dataImages.length - 1) {
         getData();
       }
       setCurrentImage(currentImage + 1);
