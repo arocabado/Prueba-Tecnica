@@ -1,6 +1,12 @@
 import Cat from "../../assets/cat.jpg";
+import Carrousel from "../../components/carrousel";
+import { useState } from "react";
+
 
 const Inicio = () => {
+  const [caruselState, setCaruselState] = useState<boolean>(false);
+  const [currentImage, setCurrentImage] = useState<number>(0);
+  console.log(currentImage)
   return (
     <div
       className="w-full h-full relative text-slate-200"
@@ -25,10 +31,16 @@ const Inicio = () => {
           <label className="text-lg">
             Generador de imágenes y datos curiosos sobre gatos
           </label>
-          <button className="bg-sky-700 rounded-2xl h-8 w-[70%] hover:bg-sky-800 focus:outline-none text-lg font-bold">
+          <button
+            className="bg-sky-700 rounded-2xl h-8 w-[70%] hover:bg-sky-800 focus:outline-none text-lg font-bold"
+            onClick={() => setCaruselState(!caruselState)}
+          >
             Nueva curiosidad
           </button>
         </div>
+      </div>
+      <div className="absolute right-40 top-9">
+        {caruselState && <Carrousel setCarusel={setCaruselState} currentImage={currentImage} setCurrentImage={setCurrentImage}/>}
       </div>
     </div>
   );
