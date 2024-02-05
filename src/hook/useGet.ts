@@ -6,15 +6,18 @@ interface ReturnValues {
 }
 
 export const useGet = (): ReturnValues => {
-  const { setImages } = useData();
+  const { images, setImages } = useData();
 
   const getData = async () => {
     try {
-      const imageResponse = await fetch("https://cataas.com/cat?json=true");
-      const imageJson = await imageResponse.json();
-      const factResponse = await fetch("https://catfact.ninja/fact");
-      const factJson = await factResponse.json();
-      setImages({ image: imageJson._id, message: factJson.fact });
+      const repeat = images.length === 0 ? 2 : 1;
+      for (let i = 0; i < repeat; i++) {
+        const imageResponse = await fetch("https://cataas.com/cat?json=true");
+        const imageJson = await imageResponse.json();
+        const factResponse = await fetch("https://catfact.ninja/fact");
+        const factJson = await factResponse.json();
+        setImages({ image: imageJson._id, message: factJson.fact });
+      }
     } catch (error) {
       console.log(error);
     }

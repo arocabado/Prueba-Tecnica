@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface ImageData {
+export interface ImageData {
   image: string;
   message: string;
 }
@@ -11,6 +11,7 @@ interface State {
   deleteImages: () => void;
   likedImages: ImageData[];
   setLikedImages: (data: ImageData) => void;
+  deleteLikedImage: (deleteImage: ImageData) => void;
 }
 
 export const useData = create<State>((set) => {
@@ -33,6 +34,15 @@ export const useData = create<State>((set) => {
         const updatedLikedImages = [...old.likedImages, newLikedImage];
         localStorage.setItem("likedImages", JSON.stringify(updatedLikedImages));
         return { ...old, likedImages: updatedLikedImages };
+      });
+    },
+    deleteLikedImage: (deleteImage) => {
+      set((old) => {
+        const newLikedImages = old.likedImages.filter(
+          (image) => image.image !== deleteImage.image
+        );
+        localStorage.setItem("likedImages", JSON.stringify(newLikedImages));
+        return { ...old, likedImages: newLikedImages };
       });
     },
   };
