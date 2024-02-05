@@ -3,14 +3,17 @@ import { useState, useEffect } from "react";
 import Carrousel from "../../components/carrousel";
 import { ImageData } from "../../Context/data";
 import IconNotFound from "../../icons/iconNotFound";
+import Buscar from "./components/buscar";
 
 const Curiosidades = () => {
   const { likedImages } = useData();
   const [dataDisplay, setDataDisplay] = useState<ImageData[] | []>(likedImages);
   const [caruselState, setCaruselState] = useState<boolean>(false);
   const [currentImage, setCurrentImage] = useState<number>(0);
+  const [textSearch, setTextSearch] = useState<string>("");
 
   const filterData = (value: React.ChangeEvent<HTMLInputElement>) => {
+    setTextSearch(value.target.value)
     if (value.target.value === "") {
       setDataDisplay(likedImages);
     } else {
@@ -29,9 +32,9 @@ const Curiosidades = () => {
   }, [likedImages]);
 
   return (
-    <div className="w-full h-full flex flex-col bg-slate-700">
-      <div className="flex py-4 justify-center">
-        <input type="text" onChange={(e) => filterData(e)} />
+    <div className="w-full h-full flex flex-col bg-slate-700 items-center">
+      <div className="flex py-4 justify-center md:w-2/5 lg:w-1/5 w-5/6 mt-1">
+        <Buscar label="Buscar..." icon={<IconNotFound />} value={textSearch} onChange={(e) => filterData(e)}/>
       </div>
       {likedImages.length === 0 ? (
         <div className="w-full h-full flex flex-col items-center pt-[8%] gap-4 text-slate-300 px-2">
